@@ -16,6 +16,10 @@ export const MovieType = (User, shootType, rottentomatoesType, senscritiqueType)
         type: GraphQLString,
         description: 'name of the movie'
       },
+      original_title: {
+		  type:GraphQLString,
+		  description: 'original name of the movie'
+      },
       director: {
         type: GraphQLString,
         description: 'The director name of the movie'
@@ -33,7 +37,7 @@ export const MovieType = (User, shootType, rottentomatoesType, senscritiqueType)
         resolve: resolver(User.Shoots)
       },
       senscritique: {
-        type: new GraphQLList(senscritiqueType),
+		  type: new GraphQLList(senscritiqueType),
         resolve: resolver(User.Senscritique)
       },
       rottentomatoes: {
