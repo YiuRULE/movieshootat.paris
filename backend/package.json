@@ -6,6 +6,8 @@
   "scripts": {
     "init": "npm install .",
     "start": "nodemon app/index.js --exec babel-node --presets es2015,stage-2",
+    "build": "babel app -d dist --presets es2015,stage-2",
+    "serve": "node dist/index.js",
     "test": "mocha --compilers js:babel-core/register test/unit"
   },
   "keywords": [
