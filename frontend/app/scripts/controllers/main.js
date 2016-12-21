@@ -9,10 +9,7 @@
  */
 angular.module('frontApp')
   .controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
-    $http.get('http://localhost:4242/movies?query={movie {  title shoots {lat long }}}', {})
-    .then(function(res) {
-      $scope.movies = res.data.data.movie;
-    });
+
     angular.extend($scope, {
       center: {
         lat: 48.8534100,
@@ -23,10 +20,8 @@ angular.module('frontApp')
         baselayers: {
             mapbox_light: {
                 name: 'Mapbox Light',
-                url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=token_api',
                 type: 'xyz',
                 layerOptions: {
-                    apikey: 'token_api',
                     mapid: 'streets-v10'
                 }
             },
@@ -37,5 +32,33 @@ angular.module('frontApp')
             }
         }
       }
+    });
+
+    $http.get('http://localhost:4242/movies?query={movie{ poster original_title title shoots {lat long } senscritique { story}}}', {})
+    .then(function(res) {
+      let marker = {};
+      let x = 0;
+      for (let i = 0; i != res.data.data.movie.length; ++i) {
+        if (res.data.data.movie[i].senscritique.length !== 0 && res.data.data.movie[i].senscritique[0].story !== null) {
+          res.data.data.movie[i].senscritique[0].story = res.data.data.movie[i].senscritique[0].story.substring(0, 100) + "...";
+        } else {
+          res.data.data.movie[i].senscritique = [{story: 'Aucune description'}];
+        }
+        const name = res.data.data.movie[i].title;
+        res.data.data.movie[i].shoots.forEach((currentShoot) => {
+          if (currentShoot.lat !== null) {
+            marker['m'+x++] = {
+              lat: currentShoot.lat,
+              lng: currentShoot.long,
+              message: name
+            }
+          }
+        });
+      }
+      console.log(marker);
+      angular.extend($scope, {
+        markers: marker
+      });
+      $scope.movies = res.data.data.movie;
     });
   }]);

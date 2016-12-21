@@ -3,10 +3,18 @@
     <leaflet lf-center="center" markers="markers" layers="layers" width="100%" height="480px"></leaflet>
   </div>
   <div class="col-xs-4">
-      <ul style="overflow: auto;height: inherit;">
-        <li class="animate-repeat" ng-repeat="movie in movies">
-          {{movie.title}}
-        </li>
-      </ul>
+    <md-list flex>
+      <md-list-item layout="row" class="md-3-line  md-long-text" ng-repeat="movie in movies" ng-click="null" style="border-bottom: 0.5px solid darkgrey;margin:5px;padding-bottom:10px">
+        <img ng-src="http://image.tmdb.org/t/p/w185/{{movie.poster}}" alt="{{movie.title}}" style="width:100px;margin-right:20px"/>
+        <div class="md-list-item-text">
+          <div style="padding-bottom: 10px">
+            <h3>{{movie.title}}</h3>
+            <h4 ng-if="movie.original_title !== movie.title">({{movie.original_title}})</h4>
+          </div>
+          <h4 ng-if="movie.original_title === movie.title"></h4>
+          <p ng-if="movie.senscritique.length > 0">{{movie.senscritique[0].story}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
   </div>
 </div>
